@@ -92,6 +92,7 @@ jobs:
         with:
           name: 'NEXTRA VPN ${{ github.ref_name }}'
           files: dist/*
+          make_latest: true
           body: |
             NEXTRA VPN для Windows и macOS.
             Windows: NEXTRA VPN_*_x64-setup.exe · Mac (M1–M4): *_aarch64.dmg · Mac (Intel): *_x64.dmg

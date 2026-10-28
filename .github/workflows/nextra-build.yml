@@ -1,0 +1,97 @@
+name: NEXTRA Desktop Build
+
+on:
+  workflow_dispatch:
+  push:
+    tags:
+      - 'nextra-v*'
+
+permissions:
+  contents: write
+
+env:
+  CARGO_INCREMENTAL: 0
+  RUST_BACKTRACE: short
+  HUSKY: 0
+
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: windows-latest
+            target: x86_64-pc-windows-msvc
+            name: windows-x64
+            files: target/x86_64-pc-windows-msvc/release/bundle/nsis/*.exe
+          - os: macos-latest
+            target: aarch64-apple-darwin
+            name: macos-apple-silicon
+            files: target/aarch64-apple-darwin/release/bundle/dmg/*.dmg
+          - os: macos-latest
+            target: x86_64-apple-darwin
+            name: macos-intel
+            files: target/x86_64-apple-darwin/release/bundle/dmg/*.dmg
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: dtolnay/rust-toolchain@master
+        with:
+          toolchain: '1.99.1'
+          targets: ${{ matrix.target }}
+
+      - uses: Swatinem/rust-cache@v2
+        with:
+          prefix-key: 'nextra-v1'
+          key: '${{ matrix.os }}-${{ matrix.target }}'
+          workspaces: |
+            . -> target
+
+      - uses: pnpm/action-setup@v6
+        with:
+          run_install: false
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: '24.22.1'
+          cache: 'pnpm'
+
+      - name: Install and fetch mihomo core
+        run: |
+          pnpm i
+          pnpm run prebuild ${{ matrix.target }}
+
+      - name: Build
+        uses: tauri-apps/tauri-action@v1
+        env:
+          NODE_OPTIONS: '--max_old_space_size=4096'
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # No paid certificates yet: ad-hoc signature on macOS (required to run on Apple Silicon).
+          APPLE_SIGNING_IDENTITY: ${{ startsWith(matrix.os, 'macos') && '-' || '' }}
+        with:
+          tauriScript: pnpm
+          args: --target ${{ matrix.target }}
+
+      - uses: actions/upload-artifact@v7
+        with:
+          name: nextra-${{ matrix.name }}
+          path: ${{ matrix.files }}
+          if-no-files-found: error
+
+  release:
+    if: startsWith(github.ref, 'refs/tags/nextra-v')
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v7
+        with:
+          path: dist
+          merge-multiple: true
+      - uses: softprops/action-gh-release@v3
+        with:
+          name: 'NEXTRA VPN ${{ github.ref_name }}'
+          files: dist/*
+          body: |
+            NEXTRA VPN для Windows и macOS.
+            Windows: NEXTRA VPN_*_x64-setup.exe · Mac (M1–M4): *_aarch64.dmg · Mac (Intel): *_x64.dmg

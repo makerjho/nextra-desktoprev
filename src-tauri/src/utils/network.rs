@@ -182,6 +182,10 @@ impl NetworkManager {
         parsed.set_username("").ok();
         parsed.set_password(None).ok();
 
+        if let Some(host) = parsed.host_str() {
+            add_nextra_device_headers(host, &mut extra_headers);
+        }
+
         // 创建请求
         let client = self
             .create_request_with_tls_mode(
@@ -353,6 +357,37 @@ impl NetworkManager {
                     fallback_err.context("static webpki roots fallback failed after platform TLS verifier failed")
                 }),
             Err(err) => Err(err),
+        }
+    }
+}
+
+/// NEXTRA servers enforce a per-subscription device limit by `x-hwid`; the id is
+/// generated once per install and sent only to NEXTRA hosts.
+fn add_nextra_device_headers(host: &str, headers: &mut HeaderMap) {
+    if host != "nextravpn.xyz" && !host.ends_with(".nextravpn.xyz") {
+        return;
+    }
+    let Ok(dir) = crate::utils::dirs::app_home_dir() else {
+        return;
+    };
+    let path = dir.join("nextra-device-id");
+    let id: std::string::String = match std::fs::read_to_string(&path) {
+        Ok(saved) if saved.trim().len() >= 16 => saved.trim().to_owned(),
+        _ => {
+            let fresh = nanoid::nanoid!(32);
+            let _ = std::fs::create_dir_all(&dir);
+            let _ = std::fs::write(&path, &fresh);
+            fresh
+        }
+    };
+    let pairs: [(&'static str, &str); 3] = [
+        ("x-hwid", id.as_str()),
+        ("x-device-os", std::env::consts::OS),
+        ("x-device-model", "NEXTRA Desktop"),
+    ];
+    for (name, value) in pairs {
+        if let Ok(value) = HeaderValue::from_str(value) {
+            headers.insert(name, value);
         }
     }
 }

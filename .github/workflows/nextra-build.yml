@@ -2,6 +2,11 @@ name: NEXTRA Desktop Build
 
 on:
   workflow_dispatch:
+    inputs:
+      version:
+        description: 'Publish as release (e.g. 0.1.0); leave empty for a test build'
+        required: false
+        default: ''
   push:
     tags:
       - 'nextra-v*'
@@ -80,7 +85,7 @@ jobs:
           if-no-files-found: error
 
   release:
-    if: startsWith(github.ref, 'refs/tags/nextra-v')
+    if: startsWith(github.ref, 'refs/tags/nextra-v') || inputs.version != ''
     needs: build
     runs-on: ubuntu-latest
     steps:
@@ -90,7 +95,9 @@ jobs:
           merge-multiple: true
       - uses: softprops/action-gh-release@v3
         with:
-          name: 'NEXTRA VPN ${{ github.ref_name }}'
+          tag_name: ${{ inputs.version != '' && format('nextra-v{0}', inputs.version) || github.ref_name }}
+          target_commitish: ${{ github.sha }}
+          name: ${{ inputs.version != '' && format('NEXTRA VPN {0}', inputs.version) || format('NEXTRA VPN {0}', github.ref_name) }}
           files: dist/*
           make_latest: true
           body: |

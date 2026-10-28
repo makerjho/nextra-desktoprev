@@ -31,6 +31,7 @@ import { CurrentProxyCard } from '@/components/home/current-proxy-card'
 import { EnhancedCard } from '@/components/home/enhanced-card'
 import { EnhancedTrafficStats } from '@/components/home/enhanced-traffic-stats'
 import { HomeProfileCard } from '@/components/home/home-profile-card'
+import { NextraConnectCard } from '@/components/home/nextra-connect-card'
 import { ProxyTunCard } from '@/components/home/proxy-tun-card'
 import { useProfiles } from '@/hooks/use-profiles'
 import { useVerge } from '@/hooks/use-verge'
@@ -90,13 +91,13 @@ const DEFAULT_HOME_CARDS: HomeCardsSettings = {
   info: false,
   profile: true,
   proxy: true,
-  network: true,
-  mode: true,
-  traffic: true,
-  clashinfo: true,
-  systeminfo: true,
-  test: true,
-  ip: true,
+  network: false,
+  mode: false,
+  traffic: false,
+  clashinfo: false,
+  systeminfo: false,
+  test: false,
+  ip: false,
 }
 
 const serializeCardFlags = (cards: HomeCardsSettings) =>
@@ -244,7 +245,7 @@ const HomePage = () => {
 
   // 文档链接函数
   const toGithubDoc = useLockFn(() =>
-    openExternalUrl('https://clash-verge-rev.github.io/index.html').catch(
+    openExternalUrl('https://connect.nextravpn.xyz/faq').catch(
       showNotice.error,
     ),
   )
@@ -354,6 +355,9 @@ const HomePage = () => {
       }
     >
       <Grid container spacing={1.5} columns={{ xs: 6, sm: 6, md: 12 }}>
+        <Grid size={12}>
+          <NextraConnectCard />
+        </Grid>
         {criticalCards}
 
         {nonCriticalCards}

@@ -67,6 +67,16 @@ jobs:
           pnpm i
           pnpm run prebuild ${{ matrix.target }}
 
+      # Skin fonts (SIL OFL); the app falls back to system fonts if they are missing.
+      - name: Fetch UI fonts
+        shell: bash
+        run: |
+          mkdir -p src/public/fonts
+          base=https://raw.githubusercontent.com/google/fonts/main/ofl
+          curl -fsSL --retry 3 -o src/public/fonts/Manrope.ttf "$base/manrope/Manrope%5Bwght%5D.ttf" || echo "Manrope not fetched"
+          curl -fsSL --retry 3 -o src/public/fonts/Unbounded.ttf "$base/unbounded/Unbounded%5Bwght%5D.ttf" || echo "Unbounded not fetched"
+          ls -la src/public/fonts
+
       - name: Build
         uses: tauri-apps/tauri-action@v1
         env:

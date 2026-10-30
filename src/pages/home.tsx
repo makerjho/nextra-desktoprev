@@ -31,7 +31,7 @@ import { CurrentProxyCard } from '@/components/home/current-proxy-card'
 import { EnhancedCard } from '@/components/home/enhanced-card'
 import { EnhancedTrafficStats } from '@/components/home/enhanced-traffic-stats'
 import { HomeProfileCard } from '@/components/home/home-profile-card'
-import { NextraConnectCard } from '@/components/home/nextra-connect-card'
+import { NextraHome } from '@/components/home/nextra-home'
 import { ProxyTunCard } from '@/components/home/proxy-tun-card'
 import { useProfiles } from '@/hooks/use-profiles'
 import { useVerge } from '@/hooks/use-verge'
@@ -89,8 +89,8 @@ interface HomeCardsSettings {
 
 const DEFAULT_HOME_CARDS: HomeCardsSettings = {
   info: false,
-  profile: true,
-  proxy: true,
+  profile: false,
+  proxy: false,
   network: false,
   mode: false,
   traffic: false,
@@ -323,7 +323,7 @@ const HomePage = () => {
   )
   return (
     <BasePage
-      title={t('home.page.title')}
+      title={null}
       contentStyle={{ padding: 2 }}
       header={
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
@@ -356,7 +356,7 @@ const HomePage = () => {
     >
       <Grid container spacing={1.5} columns={{ xs: 6, sm: 6, md: 12 }}>
         <Grid size={12}>
-          <NextraConnectCard />
+          <NextraHome />
         </Grid>
         {criticalCards}
 

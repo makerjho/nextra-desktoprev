@@ -20,7 +20,6 @@ import { HotkeyViewer } from './mods/hotkey-viewer'
 import { LayoutViewer } from './mods/layout-viewer'
 import { MiscViewer } from './mods/misc-viewer'
 import { SettingItem, SettingList } from './mods/setting-comp'
-import { ThemeModeSwitch } from './mods/theme-mode-switch'
 import { ThemeViewer } from './mods/theme-viewer'
 import { UpdateViewer } from './mods/update-viewer'
 
@@ -56,7 +55,6 @@ const SettingVergeBasic = ({ onError }: Props) => {
 
   const { verge, patchVerge, mutateVerge } = useVerge()
   const {
-    theme_mode,
     language,
     tray_event,
     env_type,
@@ -115,19 +113,6 @@ const SettingVergeBasic = ({ onError }: Props) => {
               </MenuItem>
             ))}
           </Select>
-        </GuardState>
-      </SettingItem>
-
-      <SettingItem
-        label={t('settings.components.verge.basic.fields.themeMode')}
-      >
-        <GuardState
-          value={theme_mode}
-          onCatch={onError}
-          onChange={(e) => onChangeData({ theme_mode: e })}
-          onGuard={(e) => patchVerge({ theme_mode: e })}
-        >
-          <ThemeModeSwitch />
         </GuardState>
       </SettingItem>
 

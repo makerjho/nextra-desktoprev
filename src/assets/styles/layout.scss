@@ -300,7 +300,8 @@
         justify-content: center !important;
       }
 
-      .the-logo > div > svg:last-child {
+      .the-logo > div > svg:last-child,
+      .the-logo > div > span.nx-chrome {
         display: none !important;
       }
 

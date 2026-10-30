@@ -4,12 +4,12 @@ import { useLockFn } from 'ahooks'
 import { useTranslation } from 'react-i18next'
 
 import { BasePage } from '@/components/base'
+import { NextraAppearance } from '@/components/setting/nextra-appearance'
 import SettingClash from '@/components/setting/setting-clash'
 import SettingSystem from '@/components/setting/setting-system'
 import SettingVergeAdvanced from '@/components/setting/setting-verge-advanced'
 import SettingVergeBasic from '@/components/setting/setting-verge-basic'
 import { showNotice } from '@/services/notice-service'
-import { useThemeMode } from '@/services/states'
 import { openExternalUrl } from '@/utils/open-external-url'
 
 const SettingPage = () => {
@@ -20,23 +20,19 @@ const SettingPage = () => {
   }
 
   const toGithubRepo = useLockFn(() =>
-    openExternalUrl('https://github.com/clash-verge-rev/clash-verge-rev').catch(
+    openExternalUrl('https://github.com/makerjho/nextra-desktoprev').catch(
       onError,
     ),
   )
 
   const toGithubDoc = useLockFn(() =>
-    openExternalUrl('https://clash-verge-rev.github.io/index.html').catch(
-      onError,
-    ),
+    openExternalUrl('https://connect.nextravpn.xyz/faq').catch(onError),
   )
 
   const toTelegramChannel = useLockFn(() =>
-    openExternalUrl('https://t.me/clash_verge_re').catch(onError),
+    openExternalUrl('https://t.me/nextra_adm').catch(onError),
   )
 
-  const mode = useThemeMode()
-  const isDark = mode === 'light' ? false : true
 
   return (
     <BasePage
@@ -75,12 +71,25 @@ const SettingPage = () => {
       }
     >
       <Grid container spacing={1.5} columns={{ xs: 6, sm: 6, md: 12 }}>
+        <Grid size={12}>
+          <Box
+            className="nx-card"
+            sx={{
+              borderRadius: 2,
+              backgroundColor: 'var(--nx-card)',
+              border: '1px solid var(--nx-border)',
+            }}
+          >
+            <NextraAppearance />
+          </Box>
+        </Grid>
         <Grid size={6}>
           <Box
             sx={{
               borderRadius: 2,
               marginBottom: 1.5,
-              backgroundColor: isDark ? '#282a36' : '#ffffff',
+              backgroundColor: 'var(--nx-card)',
+              border: '1px solid var(--nx-border)',
             }}
           >
             <SettingSystem onError={onError} />
@@ -88,7 +97,8 @@ const SettingPage = () => {
           <Box
             sx={{
               borderRadius: 2,
-              backgroundColor: isDark ? '#282a36' : '#ffffff',
+              backgroundColor: 'var(--nx-card)',
+              border: '1px solid var(--nx-border)',
             }}
           >
             <SettingClash onError={onError} />
@@ -99,7 +109,8 @@ const SettingPage = () => {
             sx={{
               borderRadius: 2,
               marginBottom: 1.5,
-              backgroundColor: isDark ? '#282a36' : '#ffffff',
+              backgroundColor: 'var(--nx-card)',
+              border: '1px solid var(--nx-border)',
             }}
           >
             <SettingVergeBasic onError={onError} />
@@ -107,7 +118,8 @@ const SettingPage = () => {
           <Box
             sx={{
               borderRadius: 2,
-              backgroundColor: isDark ? '#282a36' : '#ffffff',
+              backgroundColor: 'var(--nx-card)',
+              border: '1px solid var(--nx-border)',
             }}
           >
             <SettingVergeAdvanced onError={onError} />

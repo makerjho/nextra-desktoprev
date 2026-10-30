@@ -1,11 +1,8 @@
 import { DragDropProvider, KeyboardSensor, PointerSensor } from '@dnd-kit/react'
-import { Box, List, Menu, MenuItem, SvgIcon } from '@mui/material'
+import { Box, List, Menu, MenuItem } from '@mui/material'
 import { useCallback, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
-import iconDark from '@/assets/image/icon_dark.svg?react'
-import iconLight from '@/assets/image/icon_light.svg?react'
-import LogoSvg from '@/assets/image/logo.svg?react'
 import { useVerge } from '@/hooks/use-verge'
 import { useNavMenuOrder } from '@/pages/_layout/hooks'
 import { navItems } from '@/pages/_navigation'
@@ -130,21 +127,48 @@ export const LayoutSidebar = (props: LayoutSidebarProps) => {
           style={{
             height: '27px',
             display: 'flex',
-            justifyContent: 'space-between',
+            alignItems: 'center',
+            justifyContent: 'flex-start',
           }}
         >
-          <SvgIcon
-            component={isDark ? iconDark : iconLight}
-            style={{
-              height: '36px',
-              width: '36px',
-              marginTop: '-3px',
-              marginRight: '5px',
-              marginLeft: '-3px',
+          <Box
+            data-nx-glow
+            className="nx-display"
+            sx={{
+              width: 34,
+              height: 34,
+              flex: '0 0 auto',
+              mt: '-4px',
+              borderRadius: '10px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              fontWeight: 800,
+              fontSize: 18,
+              color: 'var(--nx-text)',
+              border: '1px solid var(--nx-border-strong)',
+              boxShadow: isDark
+                ? '0 0 16px rgba(255,255,255,.16), inset 0 0 10px rgba(255,255,255,.10)'
+                : '0 4px 12px rgba(13,20,23,.10)',
             }}
-            inheritViewBox
-          />
-          <LogoSvg fill={isDark ? 'white' : 'black'} />
+          >
+            N
+          </Box>
+          <Box
+            component="span"
+            className="nx-display nx-chrome"
+            sx={{
+              ml: 1.25,
+              mt: '2px',
+              fontWeight: 800,
+              fontSize: 16,
+              letterSpacing: '.14em',
+              whiteSpace: 'nowrap',
+              lineHeight: '27px',
+            }}
+          >
+            NEXTRA
+          </Box>
         </div>
         <UpdateButton className="the-newbtn" />
       </div>

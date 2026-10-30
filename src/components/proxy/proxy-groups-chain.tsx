@@ -10,7 +10,6 @@ import {
   Snackbar,
   Typography,
 } from '@mui/material'
-import { useTheme } from '@mui/material/styles'
 import {
   type Key,
   type MouseEvent,
@@ -250,9 +249,7 @@ function ProxyVirtualList({
   onHeadState: (groupName: string, patch: Partial<HeadState>) => void
   onChangeProxy: (group: ProxyGroupView, member: ResolvedProxyMember) => void
 }) {
-  const theme = useTheme()
-  const stickyBackground =
-    theme.palette.mode === 'dark' ? '#1e1f27' : 'var(--background-color)'
+  const stickyBackground = 'var(--nx-bg-color)'
 
   return (
     <div ref={parentRef} style={{ height, overflow: 'auto' }}>

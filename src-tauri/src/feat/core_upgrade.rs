@@ -22,9 +22,10 @@ use std::{
     sync::atomic::{AtomicU64, Ordering},
 };
 
-const RELEASE_VERSION_URL: &str = "https://github.com/MetaCubeX/mihomo/releases/latest/download/version.txt";
-const ALPHA_BASE_URL: &str = "https://github.com/MetaCubeX/mihomo/releases/download/Prerelease-Alpha";
-const RELEASE_DOWNLOAD_URL: &str = "https://github.com/MetaCubeX/mihomo/releases/download";
+// NEXTRA_CORE_V1: upgrades come from the NEXTRA fork; upstream cores lack ClientHello fragmentation.
+const RELEASE_VERSION_URL: &str = "https://github.com/makerjho/mihomo/releases/latest/download/version.txt";
+const ALPHA_BASE_URL: &str = "https://github.com/makerjho/mihomo/releases/latest/download";
+const RELEASE_DOWNLOAD_URL: &str = "https://github.com/makerjho/mihomo/releases/download";
 const VERSION_TIMEOUT_SECS: u64 = 20;
 const PACKAGE_TIMEOUT_SECS: u64 = 300;
 /// Well above any real core package, low enough that a wrong response cannot exhaust memory.
@@ -494,6 +495,6 @@ mod tests {
             release.ends_with("-v1.19.30.gz") || release.ends_with("-v1.19.30.zip"),
             "{release}"
         );
-        assert!(alpha.contains("/Prerelease-Alpha/"), "{alpha}");
+        assert!(alpha.contains("/releases/latest/download/"), "{alpha}");
     }
 }

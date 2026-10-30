@@ -160,14 +160,14 @@ async function updateHashCache(targetPath) {
 }
 
 // Mihomo release maps
-const META_ALPHA_VERSION_URL =
-  'https://github.com/MetaCubeX/mihomo/releases/download/Prerelease-Alpha/version.txt'
-const META_ALPHA_URL_PREFIX = `https://github.com/MetaCubeX/mihomo/releases/download/Prerelease-Alpha`
+// NEXTRA_CORE_V1: both cores come from the NEXTRA mihomo fork (ClientHello fragmentation).
+const NEXTRA_CORE_REPO = 'https://github.com/makerjho/mihomo'
+const META_ALPHA_VERSION_URL = `${NEXTRA_CORE_REPO}/releases/latest/download/version.txt`
+const META_ALPHA_URL_PREFIX = `${NEXTRA_CORE_REPO}/releases/latest/download`
 let META_ALPHA_VERSION
 
-const META_VERSION_URL =
-  'https://github.com/MetaCubeX/mihomo/releases/latest/download/version.txt'
-const META_URL_PREFIX = `https://github.com/MetaCubeX/mihomo/releases/download`
+const META_VERSION_URL = `${NEXTRA_CORE_REPO}/releases/latest/download/version.txt`
+const META_URL_PREFIX = `${NEXTRA_CORE_REPO}/releases/download`
 let META_VERSION
 
 const META_ALPHA_MAP = {

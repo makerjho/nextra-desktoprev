@@ -1,6 +1,7 @@
 import {
   AddRounded,
   BoltRounded,
+  CloudRounded,
   LanguageRounded,
   PowerSettingsNewRounded,
   RefreshRounded,
@@ -188,6 +189,7 @@ interface LocationItem {
   sub: string
   flag: string
   isGroup: boolean
+  isCdn: boolean
   member: InteractableProxyMember
 }
 
@@ -271,6 +273,7 @@ export const NextraHome = () => {
       items.push({
         name,
         isGroup,
+        isCdn: Boolean(isCdn),
         member,
         label: isGroup ? text.auto : country ? (ru ? country.ru : country.en) : cleanName(name),
         sub: isGroup ? text.best : isCdn ? 'VLESS | XHTTP | TLS' : 'VLESS | TCP | Reality',
@@ -815,6 +818,7 @@ export const NextraHome = () => {
                       }}
                     >
                       {l.isGroup && <BoltRounded sx={{ fontSize: 20, color: 'var(--nx-accent)' }} />}
+                      {l.isCdn && <CloudRounded sx={{ fontSize: 20, color: '#E9F2F5' }} />}
                     </Box>
                     <Box sx={{ minWidth: 0 }}>
                       <Typography sx={{ fontSize: 16, fontWeight: 700 }} noWrap>
